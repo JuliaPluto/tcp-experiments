@@ -27,18 +27,18 @@ end
 
 ####
 
-const response_channels = Dict{UInt64,Channel{Any}}()
 
 
 const conn = create_connection(;
-    port = 9092,
-    on_message = function(data)
-        id, msg = deserialize(data)
-        put!(response_channels[id], msg)
-        # @info "Client: Received: " String(data)
-    end
+port = 9092,
+on_message = function(data)
+    id, msg = deserialize(data)
+    put!(response_channels[id], msg)
+    # @info "Client: Received: " String(data)
+end
 )
 
+const response_channels = Dict{UInt64,Channel{Any}}()
 
 function remotecall_eval(conn, code)
     id = rand(UInt64)

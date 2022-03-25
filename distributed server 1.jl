@@ -29,8 +29,6 @@ server = create_server(;
     port = 9092,
     on_message = function(client, message)
         id, ex = deserialize(message)
-        # to_send = "Hello, " * String(message)
-        # @info "to_send" to_send
         
         result = Core.eval(Main, ex)
         

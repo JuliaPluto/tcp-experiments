@@ -15,6 +15,13 @@ function send_message(sc::🐸ServerConnection, message::Union{Vector{UInt8},Str
     write(sc.stream, message)
 end
 
+function send_message(writer::Function, sc::🐸ServerConnection)
+    # TODO: writing and reading TCP should have a message boundary to mark the end of a message. Right now the end is determined using timing, which does not work in lots of cases.
+    # See `message_handler_loop` in the Distributed source code for an example.
+    
+    writer(sc.stream)
+end
+
 function create_connection(;
     port::Integer,
     on_message::Function
